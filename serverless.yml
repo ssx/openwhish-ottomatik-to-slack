@@ -1,0 +1,30 @@
+# A friendly name for our service
+service: ottomatik-to-slack
+
+# Tell serverless that we're useing openwhish and the php runtime
+plugins:
+  - serverless-openwhisk
+
+provider:
+  name: openwhisk
+  runtime: php
+
+# Set some simple options to minimize our zip size
+package:
+  individually: true
+  exclude:
+     - "*"
+  include:
+     - "vendor/**"
+
+# Define our actual function
+functions:
+  parse:
+    # filename.function to execute
+    handler: handler.parse
+    # We'll make this web exportable so that we can direct our webhook here
+    annotations:
+        web-export: true
+    package:
+      include:
+        - handler.php
